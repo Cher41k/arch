@@ -79,4 +79,5 @@ pacstrap /mnt base base-devel
 echo '3.3 Настройка системы'
 genfstab -pU /mnt >> /mnt/etc/fstab
 
-arch-chroot /mnt sh -c "$(curl -fsSL https://git.io/fjVEQ)"
+arch-chroot /mnt sh -c "$(curl -fsSL https://raw.githubusercontent.com/Cher41k/arch/master/arch2.sh)"
+
