@@ -4,20 +4,21 @@ read -p "Введите имя пользователя: " username
 
 echo 'Прописываем имя компьютера'
 echo $hostname > /etc/hostname
-ln -svf /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime
+ln -svf /usr/share/zoneinfo/Europe/Kiev /etc/localtime
 
 echo '3.4 Добавляем русскую локаль системы'
 echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
-echo "ru_RU.UTF-8 UTF-8" >> /etc/locale.gen 
+echo "ru_RU.UTF-8 UTF-8" >> /etc/locale.gen
+echo "uk_UA.UTF-8 UTF-8" >> /etc/locale.gen 
 
 echo 'Обновим текущую локаль системы'
 locale-gen
 
 echo 'Указываем язык системы'
-echo 'LANG="ru_RU.UTF-8"' > /etc/locale.conf
+echo 'LANG="uk_UA.UTF-8' > /etc/locale.conf
 
 echo 'Вписываем KEYMAP=ru FONT=cyr-sun16'
-echo 'KEYMAP=ru' >> /etc/vconsole.conf
+echo 'KEYMAP=uk' >> /etc/vconsole.conf
 echo 'FONT=cyr-sun16' >> /etc/vconsole.conf
 
 echo 'Создадим загрузочный RAM диск'
@@ -63,13 +64,15 @@ echo 'Ставим иксы и драйвера'
 pacman -S $gui_install
 
 echo "Какое DE ставим?"
-read -p "1 - XFCE, 2 - KDE, 3 - Openbox: " vm_setting
+read -p "1 - XFCE, 2 - KDE, 3 - Openbox, 4 - MATE: " vm_setting
 if [[ $vm_setting == 1 ]]; then
   pacman -S xfce4 xfce4-goodies --noconfirm
 elif [[ $vm_setting == 2 ]]; then
   pacman -Sy plasma-meta kdebase --noconfirm
 elif [[ $vm_setting == 3 ]]; then  
   pacman -S  openbox xfce4-terminal
+ elif [[ $vm_setting == 4 ]]; then  
+  pacman -S  mate mate-extra
 fi
 
 echo 'Какой ставим DM ?'
@@ -83,10 +86,13 @@ elif [[ $dm_setting == 2 ]]; then
 fi
 
 echo 'Ставим шрифты'
-pacman -S ttf-liberation ttf-dejavu --noconfirm 
+pacman -S ttf-liberation ttf-dejavu terminus-font --noconfirm 
 
 echo 'Ставим сеть'
 pacman -S networkmanager network-manager-applet ppp --noconfirm
+
+echo 'Устанавливаем пакеты для звука'
+pacman -S pulseaudio pulseaudio-alsa alsa-utils alsa-oss
 
 echo 'Подключаем автозагрузку менеджера входа и интернет'
 systemctl enable NetworkManager
